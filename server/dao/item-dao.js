@@ -67,7 +67,6 @@ function list() {
       );
       return JSON.parse(fileData);
     });
-    itemList.sort((a, b) => new Date(a.date) - new Date(b.date));
     return itemList;
   } catch (error) {
     throw { code: "failedToListItems", message: error.message };
