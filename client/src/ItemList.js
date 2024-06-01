@@ -25,11 +25,11 @@ function ItemList() {
       <div style={{ display: "flex", justifyContent: "flex-end", gap: "8px" }}>
         <Button variant="success" onClick={() => setShowItemForm({})}>
           <Icon path={mdiPlusBoxOutline} size={1} color={"white"} /> Nová
-          událost
+          položka
         </Button>
         <Button variant="success" disabled>
           <Icon path={mdiPlusBoxMultipleOutline} size={1} color={"white"} />{" "}
-          Nové události
+          Nové položky
         </Button>
       </div>
       {!!showItemForm ? (

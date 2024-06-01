@@ -21,14 +21,13 @@ function NavBar() {
       <Container>
         <Navbar.Brand>
           <Button style={brandStyle()} onClick={() => navigate("/")}>
-            <Icon path={mdiWarehouse} size={2} color={"white"} spin={5} />
+            <Icon path={mdiWarehouse} size={2} color={"white"} />
             CAR SHOP
           </Button>
         </Navbar.Brand>
         <Nav>
           <NavDropdown
             title={loggedInCompany ? loggedInCompany.name : "Přihlaš se"}
-            drop={"start"}
           >
             {getCompanyMenuList({ companyList, loggedInCompany, handlerMap })}
           </NavDropdown>
@@ -55,7 +54,7 @@ function brandStyle() {
 function getCompanyMenuList({ companyList, loggedInCompany, handlerMap }) {
     // temporary solution to enable login/logout
     const companyMenuItemList = companyList.map((company) => (
-      <NavDropdown.Item key={company.id} onClick={() => handlerMap.login(company.id)}>
+      <NavDropdown.Item key={"company.id"} onClick={() => handlerMap.login(company.id)}>
         {company.name}
       </NavDropdown.Item>
     ));
