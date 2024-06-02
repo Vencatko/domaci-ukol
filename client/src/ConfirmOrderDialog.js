@@ -45,7 +45,7 @@ function ConfirmOrderDialog({ setShowConfirmOrderDialog, item}) {
       <Modal.Body>
         <Form.Label>Kvantita položky</Form.Label>
             <Form.Control
-              type="string"
+              type="number"
               name="quantity"
               // required
               defaultValue={0}
