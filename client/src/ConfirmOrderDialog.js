@@ -12,7 +12,7 @@ import { CompanyContext } from "./CompanyContext.js";
 
 function ConfirmOrderDialog({ setShowConfirmOrderDialog, item}) {
   const { state, handlerMap } = useContext(ItemListContext);
-  const [showAlert, setShowAlert] = useState(null);
+  const setShowAlert = useState(null);
   const isPending = state === "pending";
   const {loggedInCompany} = useContext(CompanyContext);
 
@@ -66,21 +66,6 @@ function ConfirmOrderDialog({ setShowConfirmOrderDialog, item}) {
       </Form>
     </Modal>
   ):null 
-}
-
-function pendingStyle() {
-  return {
-    position: "absolute",
-    top: "0",
-    right: "0",
-    bottom: "0",
-    left: "0",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "white",
-    opacity: "0.5",
-  };
 }
 
 export default ConfirmOrderDialog;
