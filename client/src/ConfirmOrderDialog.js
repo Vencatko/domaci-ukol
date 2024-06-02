@@ -10,12 +10,13 @@ import Icon from "@mdi/react";
 import { mdiLoading } from "@mdi/js";
 import { CompanyContext } from "./CompanyContext.js";
 
-function ConfirmOrderDialog({ setShowConfirmOrderDialog, item , customer}) {
+function ConfirmOrderDialog({ setShowConfirmOrderDialog, item}) {
   const { state, handlerMap } = useContext(ItemListContext);
   const [showAlert, setShowAlert] = useState(null);
   const isPending = state === "pending";
+  const {loggedInUser} = useContext(CompanyContext);
 
-  return (
+  return loggedInUser ? (
     <Modal show={true} onHide={() => setShowConfirmOrderDialog(false)}>
       <Modal.Header>
         <Modal.Title>Objednat položku</Modal.Title>
@@ -53,7 +54,7 @@ function ConfirmOrderDialog({ setShowConfirmOrderDialog, item , customer}) {
             try {
               await handlerMap.handleOrder({ 
                 itemId: item.id,
-                companyId: customer.id
+                companyId: loggedInUser.id
               });
               setShowConfirmOrderDialog(false);
             } catch (e) {
@@ -66,7 +67,7 @@ function ConfirmOrderDialog({ setShowConfirmOrderDialog, item , customer}) {
         </Button>
       </Modal.Footer>
     </Modal>
-  );
+  ):null 
 }
 
 function pendingStyle() {

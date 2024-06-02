@@ -11,11 +11,14 @@ import Container from "react-bootstrap/esm/Container.js";
 import Icon from "@mdi/react";
 import { mdiPlusBoxOutline, mdiPlusBoxMultipleOutline } from "@mdi/js";
 import ConfirmDeleteDialog from "./ConfirmDeleteDialog.js";
+import ConfirmOrderDialog from "./ConfirmOrderDialog.js";
+import { CompanyContext } from "./CompanyContext.js";
 
 function ItemList() {
   const { itemList } = useContext(ItemListContext);
   const [showItemForm, setShowItemForm] = useState(false);
   const [showConfirmDeleteDialog, setShowConfirmDeleteDialog] = useState(false);
+  const [showConfirmOrderDialog, setShowConfirmOrderDialog] = useState(false);
 
   const filteredItemList = itemList;
 
@@ -40,6 +43,13 @@ function ItemList() {
           setShowConfirmDeleteDialog={setShowConfirmDeleteDialog}
         />
         ) : null}
+      {!!showConfirmOrderDialog ? (
+        <ConfirmOrderDialog
+          item={showConfirmOrderDialog}
+          company={CompanyContext}
+          setShowConfirmOrderDialog={setShowConfirmOrderDialog}
+        />
+        ) : null}
       <Row md={5}>
       {filteredItemList.map((item) => {
         return (
@@ -48,6 +58,7 @@ function ItemList() {
             item={item}
             setShowItemForm={setShowItemForm}
             setShowConfirmDeleteDialog={setShowConfirmDeleteDialog}
+            setShowConfirmOrderDialog={setShowConfirmOrderDialog}
           />
         );
       })}
