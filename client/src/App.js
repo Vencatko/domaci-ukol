@@ -5,7 +5,6 @@ import ItemList from "./ItemList.js";
 import CompanyProvider from "./CompanyProvider.js";
 import ItemListProvider from "./ItemListProvider.js";
 import ItemProvider from "./ItemProvider.js";
-import Chart from "./Chart.js";
 
 function App() {
   return (
@@ -22,7 +21,6 @@ function App() {
                     <ItemProvider />
                   }
                 />
-                <Route path="chart" element={<Chart />} />
                 <Route path="*" element={"not found"} />
               </Route>
             </Routes>

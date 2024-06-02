@@ -19,7 +19,7 @@ function ItemForm({ setShowItemForm, item }) {
     <Modal show={true} onHide={() => setShowItemForm(false)}>
       <Form
         onSubmit={async (e) => {
-          e.pritemDefault();
+          e.preventDefault();
           e.stopPropagation();
           var formData = Object.fromEntries(new FormData(e.target));
           // formData.date = new Date(formData.date).toISOString();
@@ -41,7 +41,7 @@ function ItemForm({ setShowItemForm, item }) {
         <Modal.Header>
           <Modal.Title>{`${
             item.id ? "Upravit" : "Vytvořit"
-          } událost`}</Modal.Title>
+          } položku`}</Modal.Title>
           <CloseButton onClick={() => setShowItemForm(false)} />
         </Modal.Header>
         <Modal.Body style={{ position: "relative" }}>
@@ -51,7 +51,7 @@ function ItemForm({ setShowItemForm, item }) {
             dismissible
             onClose={() => setShowAlert(null)}
           >
-            <Alert.Heading>Nepodařilo se vytvořit událost</Alert.Heading>
+            <Alert.Heading>Nepodařilo se vytvořit položku</Alert.Heading>
             <pre>{showAlert}</pre>
           </Alert>
 
@@ -62,23 +62,30 @@ function ItemForm({ setShowItemForm, item }) {
           ) : null}
 
           <Form.Group className="mb-3" controlId="formBasicEmail">
-            <Form.Label>Datum konání</Form.Label>
-            <Form.Control
-              type="datetime-local"
-              name="date"
-              // required
-              defaultValue={
-                item.date ? itemDateToInput(item.date) : undefined
-              }
-            />
-          </Form.Group>
-          <Form.Group className="mb-3" controlId="formBasicEmail">
-            <Form.Label>Název událost</Form.Label>
+            <Form.Label>Název položky</Form.Label>
             <Form.Control
               type="text"
               name="name"
               // required
               defaultValue={item.name}
+            />
+          </Form.Group>
+          <Form.Group>
+            <Form.Label>Cena položky (v €)</Form.Label>
+            <Form.Control
+              type="number"
+              name="price"
+              // required
+              defaultValue={item.price}
+            />
+          </Form.Group>
+          <Form.Group>
+            <Form.Label>Kvantita položky</Form.Label>
+            <Form.Control
+              type="number"
+              name="quantity"
+              // required
+              defaultValue={item.quantity}
             />
           </Form.Group>
         </Modal.Body>
@@ -112,16 +119,6 @@ function pendingStyle() {
     backgroundColor: "white",
     opacity: "0.5",
   };
-}
-
-function itemDateToInput(date) {
-  date = new Date(date);
-  const year = date.getFullYear();
-  const month = (date.getMonth() + 1).toString().padStart(2, "0");
-  const day = date.getDate().toString().padStart(2, "0");
-  const hours = date.getHours().toString().padStart(2, "0");
-  const minutes = date.getMinutes().toString().padStart(2, "0");
-  return `${year}-${month}-${day}T${hours}:${minutes}`;
 }
 
 export default ItemForm;

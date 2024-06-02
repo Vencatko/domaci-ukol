@@ -2,6 +2,7 @@ import { useContext, useState } from "react";
 import { ItemListContext } from "./ItemListContext.js";
 
 import Button from "react-bootstrap/esm/Button.js";
+import Row from "react-bootstrap/Row";
 
 import ItemCard from "./ItemCard.js";
 import ItemForm from "./ItemForm.js";
@@ -16,13 +17,11 @@ function ItemList() {
   const [showItemForm, setShowItemForm] = useState(false);
   const [showConfirmDeleteDialog, setShowConfirmDeleteDialog] = useState(false);
 
-  const filteredItemList = itemList.filter(
-    (item) => new Date(item.date) > new Date()
-  );
+  const filteredItemList = itemList;
 
   return (
     <Container>
-      <div style={{ display: "flex", justifyContent: "flex-end", gap: "8px" }}>
+      <div style={{ display: "block", gap: "8px" }}>
         <Button variant="success" onClick={() => setShowItemForm({})}>
           <Icon path={mdiPlusBoxOutline} size={1} color={"white"} /> Nová
           položka
@@ -40,7 +39,8 @@ function ItemList() {
           item={showConfirmDeleteDialog}
           setShowConfirmDeleteDialog={setShowConfirmDeleteDialog}
         />
-      ) : null}
+        ) : null}
+      <Row md={5}>
       {filteredItemList.map((item) => {
         return (
           <ItemCard
@@ -51,6 +51,7 @@ function ItemList() {
           />
         );
       })}
+      </Row>
     </Container>
   );
 }

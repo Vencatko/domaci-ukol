@@ -8,17 +8,18 @@ import Alert from "react-bootstrap/Alert";
 
 import Icon from "@mdi/react";
 import { mdiLoading } from "@mdi/js";
+import { CompanyContext } from "./CompanyContext.js";
 
-function ConfirmDeleteDialog({ setShowConfirmDeleteDialog, item }) {
+function ConfirmOrderDialog({ setShowConfirmOrderDialog, item , customer}) {
   const { state, handlerMap } = useContext(ItemListContext);
   const [showAlert, setShowAlert] = useState(null);
   const isPending = state === "pending";
 
   return (
-    <Modal show={true} onHide={() => setShowConfirmDeleteDialog(false)}>
+    <Modal show={true} onHide={() => setShowConfirmOrderDialog(false)}>
       <Modal.Header>
-        <Modal.Title>Smazat položku</Modal.Title>
-        <CloseButton onClick={() => setShowConfirmDeleteDialog(false)} />
+        <Modal.Title>Objednat položku</Modal.Title>
+        <CloseButton onClick={() => setShowConfirmOrderDialog(false)} />
       </Modal.Header>
       <Modal.Body style={{ position: "relative" }}>
         <Alert
@@ -27,7 +28,7 @@ function ConfirmDeleteDialog({ setShowConfirmDeleteDialog, item }) {
           dismissible
           onClose={() => setShowAlert(null)}
         >
-          <Alert.Heading>Nepodařilo se vytvořit položku</Alert.Heading>
+          <Alert.Heading>Nepodařilo se vytvořit objednávku</Alert.Heading>
           <pre>{showAlert}</pre>
         </Alert>
         {isPending ? (
@@ -35,30 +36,33 @@ function ConfirmDeleteDialog({ setShowConfirmDeleteDialog, item }) {
             <Icon path={mdiLoading} size={2} spin />
           </div>
         ) : null}
-        Opravdu chcete smazat položku {item.name}?
+        Opravdu chcete objednat položku {item.name}?
       </Modal.Body>
       <Modal.Footer>
         <Button
           variant="secondary"
-          onClick={() => setShowConfirmDeleteDialog(false)}
+          onClick={() => setShowConfirmOrderDialog(false)}
           disabled={isPending}
         >
           Zavřít
         </Button>
         <Button
-          variant="danger"
+          variant="Primary"
           disabled={isPending}
           onClick={async (e) => {
             try {
-              await handlerMap.handleDelete({ id: item.id });
-              setShowConfirmDeleteDialog(false);
+              await handlerMap.handleOrder({ 
+                itemId: item.id,
+                companyId: customer.id
+              });
+              setShowConfirmOrderDialog(false);
             } catch (e) {
               console.error(e);
               setShowAlert(e.message);
             }
           }}
         >
-          Smazat
+          Objednat
         </Button>
       </Modal.Footer>
     </Modal>
@@ -80,4 +84,4 @@ function pendingStyle() {
   };
 }
 
-export default ConfirmDeleteDialog;
+export default ConfirmOrderDialog;
