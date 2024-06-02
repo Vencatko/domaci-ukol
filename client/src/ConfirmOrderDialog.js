@@ -4,40 +4,52 @@ import { ItemListContext } from "./ItemListContext.js";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import CloseButton from "react-bootstrap/CloseButton";
-import Alert from "react-bootstrap/Alert";
+import Form from "react-bootstrap/Form";
 
-import Icon from "@mdi/react";
-import { mdiLoading } from "@mdi/js";
+
+
 import { CompanyContext } from "./CompanyContext.js";
 
 function ConfirmOrderDialog({ setShowConfirmOrderDialog, item}) {
   const { state, handlerMap } = useContext(ItemListContext);
   const [showAlert, setShowAlert] = useState(null);
   const isPending = state === "pending";
-  const {loggedInUser} = useContext(CompanyContext);
+  const {loggedInCompany} = useContext(CompanyContext);
 
-  return loggedInUser ? (
+  return loggedInCompany ? (
     <Modal show={true} onHide={() => setShowConfirmOrderDialog(false)}>
+      <Form
+        onSubmit={async (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          var formData = Object.fromEntries(new FormData(e.target));
+          // formData.date = new Date(formData.date).toISOString();
+          try {
+            if (item.id) {
+              formData.itemId = item.id;
+              formData.companyId = loggedInCompany.id;
+              await handlerMap.handleOrder(formData);
+            }
+
+            setShowConfirmOrderDialog(false);
+          } catch (e) {
+            console.error(e);
+            setShowAlert(e.message);
+          }
+        }}
+      >
       <Modal.Header>
         <Modal.Title>Objednat položku</Modal.Title>
         <CloseButton onClick={() => setShowConfirmOrderDialog(false)} />
       </Modal.Header>
-      <Modal.Body style={{ position: "relative" }}>
-        <Alert
-          show={!!showAlert}
-          variant="danger"
-          dismissible
-          onClose={() => setShowAlert(null)}
-        >
-          <Alert.Heading>Nepodařilo se vytvořit objednávku</Alert.Heading>
-          <pre>{showAlert}</pre>
-        </Alert>
-        {isPending ? (
-          <div style={pendingStyle()}>
-            <Icon path={mdiLoading} size={2} spin />
-          </div>
-        ) : null}
-        Opravdu chcete objednat položku {item.name}?
+      <Modal.Body>
+        <Form.Label>Kvantita položky</Form.Label>
+            <Form.Control
+              type="string"
+              name="quantity"
+              // required
+              defaultValue={0}
+        />
       </Modal.Body>
       <Modal.Footer>
         <Button
@@ -47,25 +59,11 @@ function ConfirmOrderDialog({ setShowConfirmOrderDialog, item}) {
         >
           Zavřít
         </Button>
-        <Button
-          variant="Primary"
-          disabled={isPending}
-          onClick={async (e) => {
-            try {
-              await handlerMap.handleOrder({ 
-                itemId: item.id,
-                companyId: loggedInUser.id
-              });
-              setShowConfirmOrderDialog(false);
-            } catch (e) {
-              console.error(e);
-              setShowAlert(e.message);
-            }
-          }}
-        >
-          Objednat
+        <Button type="submit" variant="primary" disabled={isPending}>
+          Vytvořit objednávku
         </Button>
       </Modal.Footer>
+      </Form>
     </Modal>
   ):null 
 }

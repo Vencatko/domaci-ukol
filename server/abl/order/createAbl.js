@@ -58,7 +58,7 @@ async function CreateAbl(req, res) {
     }
     // check stocked items
     let item = itemDao.get(order.itemId);
-    if (item.quantity < order.quantity){
+    if (item.quantity - order.quantity < 0){
         res.status(400).json({
             code: "notEnoughItemsInStock",
             message: "not enough items in stock"

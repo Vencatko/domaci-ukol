@@ -9,10 +9,9 @@ import ItemForm from "./ItemForm.js";
 import Container from "react-bootstrap/esm/Container.js";
 
 import Icon from "@mdi/react";
-import { mdiPlusBoxOutline, mdiPlusBoxMultipleOutline } from "@mdi/js";
+import { mdiPlusBoxOutline, mdiHistory } from "@mdi/js";
 import ConfirmDeleteDialog from "./ConfirmDeleteDialog.js";
 import ConfirmOrderDialog from "./ConfirmOrderDialog.js";
-import { CompanyContext } from "./CompanyContext.js";
 
 function ItemList() {
   const { itemList } = useContext(ItemListContext);
@@ -30,8 +29,8 @@ function ItemList() {
           položka
         </Button>
         <Button variant="success" disabled>
-          <Icon path={mdiPlusBoxMultipleOutline} size={1} color={"white"} />{" "}
-          Nové položky
+          <Icon path={mdiHistory} size={1} color={"white"} />{" "}
+          Historie objednávek
         </Button>
       </div>
       {!!showItemForm ? (
@@ -46,7 +45,6 @@ function ItemList() {
       {!!showConfirmOrderDialog ? (
         <ConfirmOrderDialog
           item={showConfirmOrderDialog}
-          company={CompanyContext}
           setShowConfirmOrderDialog={setShowConfirmOrderDialog}
         />
         ) : null}
